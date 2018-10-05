@@ -12,17 +12,17 @@ def generate_key(data, it=0):
 
 
 @memory.cache
-def try_generate_hash(data, zeroes=5):
+def try_generate_hash(data, zeroes=5, verbose=False):
     i = 0
     while True:
         mod_data = generate_key(data, i)  # Generate key
-        h = hashlib.md5(mod_data.encode("utf-8")) # generate hash from key
-        h2 = h.hexdigest() # turn binary into ascii '1234567890ABCDEF'
+        h = hashlib.md5(mod_data.encode("utf-8"))  # generate hash from key
+        h2 = h.hexdigest()  # turn binary into ascii '1234567890ABCDEF'
 
-        print(f"{mod_data} -> {h2}") # key -> hash
+        if verbose: print(f"{mod_data} -> {h2}")  # key -> hash
 
-        if h2[0:zeroes] == ('0' * zeroes): # if it contains sufficient zeroes
-            print("Success!") # :-)
+        if h2[0:zeroes] == ('0' * zeroes):  # if it contains sufficient zeroes
+            print("Success!")  # :-)
             return (mod_data, h2)
 
         i += 1
@@ -31,8 +31,8 @@ def try_generate_hash(data, zeroes=5):
 with open('input', 'r') as f:
     data = f.readlines()[0]
 
-vh1 = try_generate_hash(data, 5)
-vh2 = try_generate_hash(data, 6)
+vh1 = try_generate_hash(data, 5, verbose=True)
+vh2 = try_generate_hash(data, 6, verbose=True)
 
 print("Valid hash:")
 print(vh1)
