@@ -55,15 +55,22 @@ def rangealways(start=0, stop=10, step=1):
 
 class Light(object):
     state = False
+    brightness = 0
 
     def toggle(self):
         self.state = not self.state
+        self.brightness += 2
 
     def on(self):
         self.state = True
+        self.brightness += 1
 
     def off(self):
         self.state = False
+        self.brightness -= 1
+
+        if self.brightness < 0:
+            self.brightness = 0
 
     def __str__(self):
         if self.state:
@@ -102,6 +109,11 @@ class LightGrid(object):
         x, y = key
         self.grid[y][x] = value
 
+    def __iter__(self):
+        for i in range(0, self.width):
+            for j in range(0, self.height):
+                yield self[i, j]
+
     def _apply(self, start: tuple, end: tuple, func=lambda x: ()) -> None:
         p1x, p1y = start
         p2x, p2y = end
@@ -127,7 +139,8 @@ class LightGrid(object):
 
     def render_lights_statusrep(self):
         return f"{self.lights_on():10d} on, " \
-               f"{self.lights_off():10d} off."
+               f"{self.lights_off():10d} off." \
+               f"{self.lights_value():10d} brightness."
 
     def lights_matching(self, value=True):
 
@@ -150,6 +163,15 @@ class LightGrid(object):
 
     def lights_total(self):
         return self.width * self.height
+
+    def lights_value(self):
+        n = 0
+
+        light: Light
+        for light in self:
+            n += light.brightness
+
+        return n
 
 
 class TestLightGrid(unittest.TestCase):
@@ -210,9 +232,15 @@ if __name__ == '__main__':
     lg = LightGrid(height=1000, width=1000)
 
     with open('input', 'r') as f:
-        for line in f.readlines():
+
+        lines = f.readlines()
+
+        for i in range(0, len(lines)):
+            line = lines[i]
+
             lg.apply_command(parse_command(line))
 
+            print(f'({i:3d}/{len(lines):3d}) ', end='')
             print(lg.render_lights_statusrep())
 
     print("Final answer:")
