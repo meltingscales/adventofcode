@@ -31,7 +31,7 @@ main :: IO ()
 main = do
     putStrLn "Hello, Haskell!"
 
-    contents :: String <- readFile "./input"
+    contents :: String <- readFile "../input"
 
     let list :: [String] = words contents
 
