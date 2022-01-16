@@ -30,7 +30,7 @@ def resolve_vector_name(name: str):
     return lut[name]
 
 
-def data_to_vector(datum: List[Union[str, int]]) -> List[Union[int,int]]:
+def data_to_vector(datum: List[Union[str, int]]) -> List[Union[int, int]]:
     scalar = datum[1]
     vector = resolve_vector_name(datum[0])
 
@@ -42,7 +42,6 @@ def data_to_vector(datum: List[Union[str, int]]) -> List[Union[int,int]]:
 
 
 def all_data_to_vector(data: List[List[Union[int, str]]]) -> List[List[int]]:
-
     vectors = []
 
     for datum in data:
@@ -50,9 +49,9 @@ def all_data_to_vector(data: List[List[Union[int, str]]]) -> List[List[int]]:
 
     return vectors
 
-def resolve_vectors_to_position(vecs: List[List[int]])->List[int]:
 
-    pos = [0,0] # x, y
+def resolve_vectors_to_position(vecs: List[List[int]]) -> List[int]:
+    pos = [0, 0]  # x, y
 
     for vec in vecs:
         pos[0] += vec[0]
@@ -60,11 +59,10 @@ def resolve_vectors_to_position(vecs: List[List[int]])->List[int]:
 
     return pos
 
+
 data = get_data()
 vectors = all_data_to_vector(data)
 pos = resolve_vectors_to_position(vectors)
 
 print("Final position: ")
 print(pos)
-
-raise Exception("asdf")
